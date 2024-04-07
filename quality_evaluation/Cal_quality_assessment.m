@@ -1,9 +1,10 @@
 clear;clc;
+addpath("quality_evaluation\");
+output_path = 'output/quality_origin.xlsx';
 
-output_path = 'D:/Leo_files/MST/simulation/test_code/exp/quality_origin.xlsx';
-
-files = dir("D:/Leo_files/MST/simulation/test_code/exp/**/*.mat"); %全体计算
+% files = dir("D:/Leo_files/MST/simulation/test_code/exp/**/*.mat"); %全体计算
 % files = dir("D:/Leo_files/MST/simulation/test_code/exp/想要计算的单个文件夹/*.mat"); % 单个数据计算
+files = dir("data/PnP-HSDT/*.mat"); %全体计算
 
 filename_list = {files.name}';
 foldername_list = {files.folder}';

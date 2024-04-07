@@ -18,9 +18,11 @@ rmse = sqrt(sum(aux, 3)/n_bands);
 mean_y = sum(sum(y, 1), 2)/n_samples;
 ergas = 100*ratio_ergas*sqrt(sum((rmse_per_band ./ mean_y).^2)/n_bands);
 
-% SAM
+% SAM version2
 sam= SpectAngMapper( ground_truth, estimated );
-sam=sam*180/pi;
+sam=sam*180/pi; % 好像不用加这这个放大系数，就可以得到0.0几
+
+% SAM version2
 % num = sum(x .* y, 3);
 % den = sqrt(sum(x.^2, 3) .* sum(y.^2, 3));
 % sam = sum(sum(acosd(num ./ den)))/(n_samples);
