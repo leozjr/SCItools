@@ -79,12 +79,8 @@ for r = 1:rows
         figscount = figscount+1;
     end
 end
-% h
-% rect1 = [181 37 553 553];
-% h_crop = imcrop(h,rect1);
-% saveas(h_crop, [resultname '.png']); 
-saveas(h, resultname);
-% print(gcf,'-dpng',resultname);
+
+exportgraphics(h, resultname, "Resolution",600);
 close(h);
 
 

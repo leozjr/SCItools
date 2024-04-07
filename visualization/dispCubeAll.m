@@ -80,11 +80,7 @@ for r = 1:rows
     end
 end
 
-% h
-% rect1 = [181 37 553 553];
-% h_crop = imcrop(h,rect1);
-saveas(h, resultname);
-% print(gcf,'-dpng',resultname);
+exportgraphics(h, resultname, "Resolution",600);
 close(h);
 
 

@@ -6,8 +6,7 @@ function createfigure(X1, YMatrix1, Corr)
 %  由 MATLAB 于 19-Feb-2022 11:12:35 自动生成
 
 % 创建 figure
-figure1 = figure('PaperOrientation','landscape',...
-    'PaperSize',[29.69999902 20.99999864]);
+figure1 = figure('PaperOrientation','landscape','PaperSize',[29.69999902 20.99999864]);
 
 % 创建 axes
 axes1 = axes('Parent',figure1,'Position',[0.13 0.11 0.385625 0.815]);

@@ -25,13 +25,18 @@ classdef Evaluator < handle
         function obj = Evaluator(orig, pred, save_path)
             addpath("quality_evaluation\", "visualization\");
             % 输入尺寸必须是：[num, width, height, bands]
+            if ~(size(pred, ndims(pred)) == 28 || size(pred, ndims(pred)) == 31) || ~(size(orig, ndims(orig)) == 28 || size(orig, ndims(orig)) == 31)
+                error("通道数异常");
+            end
+
+            % 单张可以扩展1维
             if ndims(pred) == 3 && ndims(orig) == 3
                 orig = reshape(orig, [1, size(orig)]);
                 pred = reshape(pred, [1, size(pred)]);
             end
             
             if ~isfolder(save_path)
-                mkdir(save_path);
+                mkdir(save_path)  
             end
 
             obj.origin = orig;
@@ -39,15 +44,18 @@ classdef Evaluator < handle
             obj.data_num = size(obj.origin,1);
             obj.band_num = size(obj.origin,4);
             obj.save_path = save_path;
- 
+            
         end
         
-        function eval(obj)
+        function eval(obj, need_img, need_quals)
             obj.cal_quality_indexs();
-            % obj.gen_imgs();
-            obj.save_quality_indexs();
+            if need_img
+                obj.gen_imgs();
+            end
+            if need_quals
+                obj.save_quality_indexs();
+            end
         end
-
 
         function cal_quality_indexs(obj)
             truth = double(obj.origin);
@@ -100,8 +108,6 @@ classdef Evaluator < handle
             fclose(fid);
         end
 
-
-
         function gen_imgs(obj)
             if obj.band_num == 28
                 lam = [453.5 457.5 462.0 466.0 471.5 476.5 481.5 487.0 492.5 498.0 504.0 510.0...
@@ -127,7 +133,7 @@ classdef Evaluator < handle
                 scene_num = scene_num+1;
             end
 
-            % Independent 这个代码只是很简单的修改了行数和列数，比较简陋，需要重构
+            % separate 这个代码只是很简单的修改了行数和列数，比较简陋，需要重构
             for i = 1:obj.data_num
                 separate_save_path = fullfile(obj.save_path, sprintf("scene%.2d_separate", i-1));
                 if ~isfolder(separate_save_path)
@@ -144,10 +150,6 @@ classdef Evaluator < handle
                 end
             end
             
-        end
-
-        function gen_spectral_curve(obj)
-
         end
     end
 

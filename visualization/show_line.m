@@ -1,32 +1,19 @@
 %% plot color pics
 clear; clc;
-load(['simulation_results\results\','truth','.mat']);
 
-load(['simulation_results\results\','hdnet','.mat']);
-pred_block_hdnet = pred;
-
-load(['simulation_results\results\','mst_s','.mat']);
+load(['data\','mst_s','.mat']);
 pred_block_mst_s = pred;
 
-load(['simulation_results\results\','mst_m','.mat']);
+load(['data\','mst_m','.mat']);
 pred_block_mst_m = pred;
-
-load(['simulation_results\results\','mst_l','.mat']);
-pred_block_mst_l = pred;
-
-load(['simulation_results\results\','mst_plus_plus','.mat']);
-pred_block_mst_plus_plus = pred;
 
 lam28 = [453.5 457.5 462.0 466.0 471.5 476.5 481.5 487.0 492.5 498.0 504.0 510.0...
     516.0 522.5 529.5 536.5 544.0 551.5 558.5 567.5 575.5 584.5 594.5 604.0...
     614.5 625.0 636.5 648.0];
 
 truth(find(truth>0.7))=0.7;
-pred_block_hdnet(find(pred_block_hdnet>0.7))=0.7;
 pred_block_mst_s(find(pred_block_mst_s>0.7))=0.7;
 pred_block_mst_m(find(pred_block_mst_m>0.7))=0.7;
-pred_block_mst_l(find(pred_block_mst_l>0.7))=0.7;
-pred_block_mst_plus_plus(find(pred_block_mst_plus_plus>0.7))=0.7;
 
 f = 2;
 
@@ -38,12 +25,8 @@ close(123);
 
 figure; 
 
-spec_mean_truth = mean(mean(squeeze(truth(f,rect2crop(2):rect2crop(2)+rect2crop(4) , rect2crop(1):rect2crop(1)+rect2crop(3),:)),1),2);
-spec_mean_hdnet = mean(mean(squeeze(pred_block_hdnet(f,rect2crop(2):rect2crop(2)+rect2crop(4) , rect2crop(1):rect2crop(1)+rect2crop(3),:)),1),2);
 spec_mean_mst_s = mean(mean(squeeze(pred_block_mst_s(f,rect2crop(2):rect2crop(2)+rect2crop(4) , rect2crop(1):rect2crop(1)+rect2crop(3),:)),1),2);
 spec_mean_mst_m = mean(mean(squeeze(pred_block_mst_m(f,rect2crop(2):rect2crop(2)+rect2crop(4) , rect2crop(1):rect2crop(1)+rect2crop(3),:)),1),2);
-spec_mean_mst_l = mean(mean(squeeze(pred_block_mst_l(f,rect2crop(2):rect2crop(2)+rect2crop(4) , rect2crop(1):rect2crop(1)+rect2crop(3),:)),1),2);
-spec_mean_mst_plus_plus = mean(mean(squeeze(pred_block_mst_plus_plus(f,rect2crop(2):rect2crop(2)+rect2crop(4) , rect2crop(1):rect2crop(1)+rect2crop(3),:)),1),2);
 
 spec_mean_truth = spec_mean_truth./max(spec_mean_truth);
 spec_mean_hdnet = spec_mean_hdnet./max(spec_mean_hdnet);
