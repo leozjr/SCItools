@@ -1,7 +1,12 @@
+% 绘制高光谱图像的RGB合成图
 clear;
-img_path = "./data/scene01.mat";
-var_name = 'img';
+folder_path = "./data/test_data/simu/Truth/";
+img_name = "scene10";
+save_path = "./output";
+img_path = fullfile(folder_path, img_name + ".mat");
 
+
+var_name = 'img';
 data_struct = load(img_path);
 data = data_struct.(var_name);
 [~, ~, channels] = size(data);
@@ -19,5 +24,6 @@ else
 end
 
 hcube = hypercube(data, lam);
-colored = colorize(hcube);
-imshow(colored);
+colored = colorize(hcube, Method="rgb");
+save_path = fullfile(save_path, sprintf("%s.png", img_name));
+imwrite(colored, save_path);

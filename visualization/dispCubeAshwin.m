@@ -1,6 +1,6 @@
 function [] = dispCubeAshwin(datacube,brightness,mywl,labelss,cols,rows,writefile,grayc,resultname)
 %dispCubeAshwin(x_twist16,80,linspace(450,650,23),[],4,6,0,0)
-h = figure;
+h = figure();
 set(gcf,'color','white');
 % fig_xpos = 10;  % 50
 % fig_ypos = -30;  % 50
@@ -79,12 +79,8 @@ for r = 1:rows
         figscount = figscount+1;
     end
 end
-% h
-% rect1 = [181 37 553 553];
-% h_crop = imcrop(h,rect1);
-% saveas(h_crop, [resultname '.png']); 
-saveas(h, [resultname, '.png']);
-% print(gcf,'-dpng',resultname);
+exportgraphics(h, resultname, "Resolution",600);
+close(h);
 
 
 function sRGB = spectrumRGB(lambdaIn, varargin)

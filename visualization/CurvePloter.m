@@ -13,7 +13,7 @@ classdef CurvePloter < handle
 
     methods
         function obj = CurvePloter(origin, predict, namelist, save_path)
-            % truth输入尺寸必须是：[width, height, bands] 或者 [1, width, height, bands]
+            % truth输入尺寸必须是：[1, width, height, bands]
             % predict输入尺寸必须是：[width, height, bands] 或者 [num, width, height, bands] 需要绘制很多条曲线,
             
             if ndims(predict) == 3
@@ -21,7 +21,7 @@ classdef CurvePloter < handle
             end
 
             % 拼接后，第一个是truth
-            cubes = cat(1, reshape(origin, [1, size(origin)]), predict);
+            cubes = cat(1, origin, predict);
             cubes(cubes>0.7) = 0.7;
 
             obj.cubes = cubes;
@@ -45,25 +45,47 @@ classdef CurvePloter < handle
 
             % 使用matlab的Hyperspectral Image Processing工具箱生成RGB图像
             spec_img = hypercube(origin, obj.lam);
-            obj.RGB = colorize(spec_img);
+            obj.RGB = colorize(spec_img,Method="rgb");
         end
 
-        function plot_curves(obj)
+        function plot_curves(obj, highlight_idx)
             % 数据预处理，变为光谱曲线
             obj.gen_lines();
-
+        
             % 创建 figure
             f = figure();
-            plot(obj.lam, obj.spec_lines,'MarkerSize',16,'Marker','.','LineWidth',2.5);
-
-            ylabel('Density');
+            hold on; % 保持当前图像，以便在同一图中绘制多条曲线
+        
+            % 循环遍历所有曲线
+            for i = 1:size(obj.spec_lines, 1)
+                if ismember(i, highlight_idx)
+                    % 高亮显示的曲线
+                    if i == highlight_idx(1)
+                        % 第一个高亮曲线为红色
+                        plot(obj.lam, obj.spec_lines(i, :), 'r-', 'LineWidth', 3.5);
+                    else
+                        % 其他高亮曲线使用默认颜色
+                        plot(obj.lam, obj.spec_lines(i, :), 'LineWidth', 2.5);
+                    end
+                else
+                   % 对于非高亮曲线，随机选取一种颜色并设置透明度为0.5
+                    randomColor = rand(1, 3);
+                    plot(obj.lam, obj.spec_lines(i, :), 'LineStyle', '--', 'LineWidth', 2, 'Color', [randomColor, 0.5]);
+                end
+            end
+        
+            hold off; % 释放当前图像
+        
+            % 固定y轴范围
+            ylim([0, 1]);
+        
+            ylabel('Density','FontName','Times New Roman');
             xlabel('Wavelength (nm)');
-            
-            legend(obj.namelist, 'Location','best');
-            
+        
+            legend(obj.namelist, 'Location', 'best', 'Interpreter', 'none');
+        
             % 保存
-            exportgraphics(f, fullfile(obj.save_path, "spec_lines.png"), "Resolution",600);
- 
+            exportgraphics(f, fullfile(obj.save_path, "spec_lines.png"), "Resolution", 600);
         end
         
 
@@ -88,7 +110,7 @@ classdef CurvePloter < handle
             mean_cubes = mean(mean(obj.cubes, 2), 3);
             mean_cubes = mean_cubes ./ max(mean_cubes, [], 4); % 除以自己通道的最大值
             
-            % 相关系数, 不用算自己和自己的
+            % 相关系数, 不用算真值和自己的
             mean_truth = mean_cubes(1,:,:,:);
             for i = 2:obj.data_num
                 mean_cube = mean_cubes(i, :,:,:);

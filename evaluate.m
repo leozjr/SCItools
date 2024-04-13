@@ -4,7 +4,7 @@ clear;clc;
 
 load("data\kaist_crop256_01_result.mat");
 save_path = "output\PnPHSI";
-gen_imgs = true;
+
 
 evaluator = Evaluator(origin, predict, save_path);
-evaluator.eval();
+evaluator.eval(false, true); % need_img, need_quals
