@@ -79,6 +79,8 @@ for r = 1:rows
         figscount = figscount+1;
     end
 end
+axis tight;
+set(gca, 'LooseInset', get(gca, 'TightInset'));
 exportgraphics(h, resultname, "Resolution",600);
 close(h);
 

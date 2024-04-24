@@ -1,7 +1,7 @@
 clear; clc;
-folder_path = "data\chapter3\real\";
+folder_path = "data\chapter5\simu\";
 file_extension = ".mat";
-scene_idx = 2;
+scene_idx = 1;
 
 % 获取 folder_path 下所有 .mat 文件
 files = dir(fullfile(folder_path, "*" + file_extension));

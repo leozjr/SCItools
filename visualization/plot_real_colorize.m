@@ -1,14 +1,14 @@
 %% plot color pics
 clear; clc;
-folder_path = "data\chapter3\real\";
-file_name = "SC-DUT_5stg";
+folder_path = "data\chapter4\real\";
+file_name = "PnP-HSI";
 
 load(fullfile(folder_path, file_name + ".mat"));
 save_file = fullfile(folder_path, "rgb_results/", file_name);
 mkdir(save_file);
 
 close all;
-for i = 1:5
+for i = 3
     recon = squeeze(pred(i,:,:,:));
     recon = recon / max(max(max(recon)));
     intensity = 5;

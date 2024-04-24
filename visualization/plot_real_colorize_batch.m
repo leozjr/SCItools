@@ -1,5 +1,5 @@
 clear; clc;
-folder_path = "data/chapter3/real/";
+folder_path = "data/chapter4/real/";
 file_extension = ".mat";
 scene_idx = [3];  % 指定场景索引
 

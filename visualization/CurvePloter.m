@@ -31,7 +31,15 @@ classdef CurvePloter < handle
 
             % 设置波长
             band_num = size(cubes, ndims(cubes));
-            if band_num == 28
+            if band_num == 24
+                obj.lam = [398.617939958977, 404.402632317658, 410.574115854899, 417.159372325304,...
+                        424.187266572559, 431.688677953166, 439.696640932459, 448.246495493025, ...
+                        457.376048040370, 467.125743538450, 477.538849658800, 488.661653781728, ...
+                        500.543673746535, 513.237883310311, 526.800953341869, 541.293509848978, ...
+                        556.780410013717, 573.331037492779, 591.019618327240, 609.925558900174, ...
+                        630.133807480854, 651.735241001701, 674.827078828993, 699.513325411290];
+
+            elseif band_num == 28
                 obj.lam = [453.5 457.5 462.0 466.0 471.5 476.5 481.5 487.0 492.5 498.0 504.0 510.0...
                         516.0 522.5 529.5 536.5 544.0 551.5 558.5 567.5 575.5 584.5 594.5 604.0...
                         614.5 625.0 636.5 648.0];
@@ -62,7 +70,7 @@ classdef CurvePloter < handle
                     % 高亮显示的曲线
                     if i == highlight_idx(1)
                         % 第一个高亮曲线为红色
-                        plot(obj.lam, obj.spec_lines(i, :), 'r-', 'LineWidth', 3.5);
+                        plot(obj.lam, obj.spec_lines(i, :), 'r-', 'LineWidth', 3);
                     else
                         % 其他高亮曲线使用默认颜色
                         plot(obj.lam, obj.spec_lines(i, :), 'LineWidth', 2.5);
@@ -75,14 +83,16 @@ classdef CurvePloter < handle
             end
         
             hold off; % 释放当前图像
-        
+            box on;
+            ax = gca;
+            ax.LineWidth = 1.6;
             % 固定y轴范围
             ylim([0, 1]);
+            xlim([400, 700]);
+            ylabel('Density','FontName', 'Times New Roman');
+            xlabel('Wavelength (nm)', 'FontName', 'Times New Roman');
         
-            ylabel('Density','FontName','Times New Roman');
-            xlabel('Wavelength (nm)');
-        
-            legend(obj.namelist, 'Location', 'best', 'Interpreter', 'none');
+            legend(obj.namelist, 'Location', 'best', 'Interpreter', 'none', 'FontName', 'Times New Roman');
         
             % 保存
             exportgraphics(f, fullfile(obj.save_path, "spec_lines.png"), "Resolution", 600);
